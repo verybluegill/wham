@@ -1,7 +1,8 @@
-wham 2.1.0.9003 (2025-08-08)
+wham 2.1.0.9004 (2025-09-11)
 =========================
 
 ### Bug fixes
+* (2.1.0.9004) fix bug in `compare_wham_models` with plotting of selectivity blocks. []()
 * (2.1.0.9003) fix bug in `plot_wham_output` with identifying selectivity blocks for plotting. [316f5ea](https://github.com/timjmiller/wham/commit/316f5ea231df4ae15d4d70019179c507e8eda7ae)
 * (2.1.0.9002) fix bug in `project_wham` for models with lognormal bias adjustment. [c68cca1](https://github.com/timjmiller/wham/commit/c68cca1b2aaff95f5a97f0ff606388b9858f9a72)
 * (2.1.0.9001) fix bug in `project_wham` for certain combinations of `proj.opts$proj_R_opt` and `proj.opts$proj_NAA_opt`. [4ce030e](https://github.com/timjmiller/wham/commit/4ce030e5616d4a15cf4adfe701301f679cd51bd4)

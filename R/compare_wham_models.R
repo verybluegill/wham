@@ -324,7 +324,7 @@ fancy_scientific <- function(l) {
     l <- gsub("e", "%*%10^", l)
     l <- gsub("\\'1[\\.0]*\\'\\%\\*\\%", "", l)
   }
-  parse(text=l)
+  parse(text=l, keep.source = FALSE)
 }
 # get.ci <- function(x, alpha=0.05, getci=TRUE){
 #   if(!getci) x[,2] <- 0
@@ -921,8 +921,8 @@ plot.selectivity.compare <- function(x, plot.opts, type="fleets"){
     for(i in 1:length(x)){
       selblocks <- sort(unique(x[[i]][[ptr_name]][,f]))
       for(j in 1:length(selblocks)){
-        sel <- apply(x[[i]][["selAA"]][[j]][yrs[[f]][[i]][[j]],,drop = FALSE], 2, mean, na.rm=T)
-        df <- rbind(df, data.frame(Age=1:n_ages, Selectivity=sel, Block=paste0("Block ",j), Fleet = paste0(onename, " ", f), Model=names(x)[i]))
+        sel <- apply(x[[i]][["selAA"]][[selblocks[j]]][yrs[[f]][[i]][[j]],,drop = FALSE], 2, mean, na.rm=T)
+        df <- rbind(df, data.frame(Age=1:n_ages, Selectivity=sel, Block=paste0("Block ",selblocks[j]), Fleet = paste0(onename, " ", f), Model=names(x)[i]))
       }
     }
   }
