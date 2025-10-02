@@ -91,7 +91,7 @@ for(m in 1:n.mods){
 	mods[[m]] <- fit_wham(input, do.check=T, do.osa=F, do.retro=F) 
 }
 
-for(m in 1:length(mods)) saveRDS(mod[[m]], file=paste0("m",m,".rds"))
+for(m in 1:length(mods)) saveRDS(mods[[m]], file=paste0("m",m,".rds"))
 
 # -----------------------------------------------------------------------
 # 4. Model convergence and comparison
@@ -167,3 +167,8 @@ print(ggplot(df, aes(x=Year, y=Age)) +
 	scale_x_continuous(expand=c(0,0)) +
 	scale_y_continuous(expand=c(0,0)))
 dev.off()
+
+# Note: Warnings about Inf/-Inf may appear when empty panels are drawn, 
+# but they do not affect the plot or the data (safe to ignore). 
+
+utils::browseURL("selAA.png") #Show a created image

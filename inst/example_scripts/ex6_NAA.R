@@ -118,7 +118,18 @@ df.mods$NLL <- sapply(mods, function(x) round(x$opt$objective,3))
 not_conv <- !df.mods$conv | !df.mods$pdHess
 mods2 <- mods
 mods2[not_conv] <- NULL
-df.aic.tmp <- as.data.frame(compare_wham_models(mods2, table.opts=list(sort=FALSE, calc.rho=TRUE))$tab)
+#df.aic.tmp <- as.data.frame(compare_wham_models(mods2, table.opts=list(sort=FALSE, calc.rho=TRUE))$tab)
+# (Question) In WHAM 2.1.0.9004, could sort/calc.rho inside table.opts be ignored/unstable and trigger retro/Mohn’s rho paths?
+# (Suggestion) We pass options at the top level and set do.print/do.plot=FALSE to avoid side effects—please confirm this is the recommended API.
+cmp <- compare_wham_models(
+  mods2,
+  sort = FALSE,
+  calc.rho = TRUE,
+  do.table = TRUE,
+  do.plot = FALSE,
+  do.print = FALSE
+)
+df.aic.tmp <- as.data.frame(cmp$tab)
 df.aic <- df.aic.tmp[FALSE,]
 ct = 1
 for(i in 1:n.mods){
@@ -193,3 +204,4 @@ png(filename = file.path(getwd(), paste0("NAA_devs.png")), width = 8, height = 8
       scale_fill_gradient2(name = "", low = scales::muted("blue"), mid = "white", high = scales::muted("red")))
 dev.off()
 
+utils::browseURL("NAA_devs.png") #Show a created image

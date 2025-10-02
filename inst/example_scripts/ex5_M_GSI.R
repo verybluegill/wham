@@ -73,6 +73,7 @@ for(m in 1:n.mods){
 
   mean_map <- NULL
   if(df.mods$mean_model[m] == "estimate-M"){
+    mean_map <- array(NA_integer_, c(1,1,asap3[[1]]$dat$n_ages)) # initialize 3D array for M mapping (RM changed)
     if(df.mods$age_specific[m]) mean_map[1,1,] <- 1:asap3[[1]]$dat$n_ages
     else mean_map[1,1,] <- 1
   }
@@ -96,7 +97,8 @@ for(m in 1:n.mods){
     age_comp = "logistic-normal-pool0", basic_info = basic_info)
 
   # Fit model
-  mods[[m]] <- fit_wham(input, do.retro=T, do.osa=F) # no OSA residuals to save time
+  #mods[[m]] <- fit_wham(input, do.retro=T, do.osa=F) # no OSA residuals to save time
+  mods[[m]] <- fit_wham(input, do.retro=T, do.osa=F, MakeADFun.silent = TRUE) 
 
   # Save model
   saveRDS(mods[[m]], file=paste0(df.mods$Model[m],".rds"))
@@ -149,7 +151,21 @@ df.mods
 
 # plot output for all models that converged
 for(m in which(is_conv)){
-  plot_wham_output(mod=mods[[m]], dir.main=file.path(write.dir,paste0("m",m)))
+  od <- file.path(write.dir, paste0("m", m)) 
+  msg <- try(plot_wham_output(mod = mods[[m]], dir.main = od))
+  
+  if(inherits(msg, "try-error")){
+    # m8 fail when plotting M rows due to duplicate row names.
+    # Fallback: make a copy of the model, hide all M rows, and re-run plotting.
+    message(sprintf("model m%d failed; retry with a plotting-only copy (M rows omitted)", m))
+    mod2 <- mods[[m]]                        
+    if(!is.null(mod2$input$map$Mpars)) {
+      mod2$input$map$Mpars[] <- NA_integer_  # hide all M rows for plotting only
+    }
+    od2 <- paste0(od, "_noMrow")             
+    plot_wham_output(mod = mod2, dir.main = od2, out.type = "html")
+    message(sprintf("model m%d: HTML generated with M omitted -> %s", m, od2))
+  }
 }
 
 # save results table
@@ -206,6 +222,8 @@ png(filename = file.path(write.dir, "MAA.png"), width = 15, height = 15, res = 1
       # size = 6)
     )
 dev.off()
+
+utils::browseURL("MAA.png") #Show a created image
 
 # add projections
 mods_proj <- vector("list",n.mods)
