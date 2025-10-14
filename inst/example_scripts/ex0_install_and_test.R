@@ -1,4 +1,4 @@
-# load wham (Requires R >= 4.2.2 and the matching Rtools. Confirmed to work with R 4.3.1.)
+# the way to load wham (Requires R >= 4.2.2 and the matching Rtools. Confirmed to work with R 4.3.1.)
 library(Matrix) # Matrix を先にロード（Matrixのバージョンに TMB のバージョンを合わせるため）
 install.packages("TMB", type = "source") # TMB を "source" で再インストール
 library(TMB)
@@ -10,11 +10,11 @@ library(wham)
 #> packageVersion("Matrix")
 #[1] ‘1.5.4.1’
 #> packageVersion("TMB")
-#[1] ‘1.9.17’
+#[1] ‘1.9.18’
 #> packageVersion("wham")
 #[1] ‘2.1.0.9004’
 
-## 作業用ディレクトリの用意（WHAM の出力を一時フォルダに保存）
+## 作業用ディレクトリの用意（今回はWHAM の出力を一時フォルダに保存）
 if(!exists("write.dir")) write.dir <- tempdir(check=TRUE)
 if(!dir.exists(write.dir)) dir.create(write.dir)
 setwd(write.dir)

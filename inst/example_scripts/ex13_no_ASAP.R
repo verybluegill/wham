@@ -1,6 +1,8 @@
 library(wham)
 
-# create directory for analysis, E.g.,
+#毎回コードを実行する前に、Working DirectoryをProjectのDirectoryに設定してください。
+#RStudioのSession → Set WD → To Project Directoryで設定できます。
+# create directory for analysis
 write.dir <- file.path(getwd(), "ex_res", "ex13")
 if(!exists("write.dir")) write.dir <- tempdir(check=TRUE)
 if(!dir.exists(write.dir)) dir.create(write.dir)
@@ -9,7 +11,7 @@ setwd(write.dir)
 path_to_examples <- system.file("extdata", package="wham")
 asap3 <- read_asap3_dat(file.path(path_to_examples,"ex2_SNEMAYT.dat"))
 input <- prepare_wham_input(asap3) 
-aa
+
 basic_info <- list(
     n_stocks = 1L,
     n_seasons = 1L,
