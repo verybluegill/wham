@@ -1,3 +1,5 @@
+# Recommend you to make a RStudio project in "wham-master" folder
+
 # the way to load wham (Requires R >= 4.2.2 and the matching Rtools. Confirmed to work with R 4.3.1.)
 library(Matrix) # Matrix を先にロード（Matrixのバージョンに TMB のバージョンを合わせるため）
 install.packages("TMB", type = "source") # TMB を "source" で再インストール

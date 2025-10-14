@@ -1,4 +1,8 @@
 # Run all WHAM examples
+
+#コードを実行する前に、Working DirectoryをProjectのDirectoryに設定してください。
+#RStudioのSession → Set WD → To Project Directoryで設定できます。
+
 # wdにex1~13の結果を保存するフォルダーを生成（1回のみ実行）
 base <- file.path(getwd(), "ex_res")
 dir.create(base, showWarnings = FALSE)
