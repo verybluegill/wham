@@ -9,7 +9,7 @@ setwd(write.dir)
 path_to_examples <- system.file("extdata", package="wham")
 asap3 <- read_asap3_dat(file.path(path_to_examples,"ex2_SNEMAYT.dat"))
 input <- prepare_wham_input(asap3) 
-
+aa
 basic_info <- list(
     n_stocks = 1L,
     n_seasons = 1L,

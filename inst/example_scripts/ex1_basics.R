@@ -1,11 +1,9 @@
+library(wham)
+
 # wdにex1~13の結果を保存するフォルダーを生成（1回のみ実行）
 base <- file.path(getwd(), "ex_res")
 dir.create(base, showWarnings = FALSE)
 invisible(lapply(file.path(base, sprintf("ex%d", c(1:6, 8:13))), dir.create, showWarnings = FALSE))
-
-# load wham
-#install.packages("pak"); pak::pkg_install("timjmiller/wham") #もしpakが未インストールであれば
-library(wham)
 
 write.dir <- file.path(base, "ex1") 
 if(!exists("write.dir")) write.dir <- tempdir(check=TRUE)
