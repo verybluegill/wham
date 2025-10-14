@@ -12,20 +12,18 @@
 
 # CURRENTLY: selectivity$initial_pars is different between ex4_selectivity and test_ex04_selectivity
 
-is.repo <- try(pkgload::load_all(compile=FALSE)) #this is needed to run from repo without using installed version of wham
-if(is.character(is.repo)) library(wham) #not using repo
+library(wham)
 library(ggplot2)
 library(tidyr)
 library(viridis)
-#by default do not perform bias-correction
-if(!exists("basic_info")) basic_info <- NULL
+basic_info <- NULL # Use WHAM defaults
 
 # -------------------------------------------------------------------------
 # 1. Setup and load data
 # -------------------------------------------------------------------------
 
 # create directory for analysis, e.g.
-# write.dir <- "/path/to/save/ex2" on linux/mac
+write.dir <- file.path(getwd(), "ex_res", "ex4")
 if(!exists("write.dir")) write.dir <- tempdir(check=TRUE)
 if(!dir.exists(write.dir)) dir.create(write.dir)
 setwd(write.dir)
@@ -170,5 +168,3 @@ dev.off()
 
 # Note: Warnings about Inf/-Inf may appear when empty panels are drawn, 
 # but they do not affect the plot or the data (safe to ignore). 
-
-utils::browseURL("selAA.png") #Show a created image

@@ -1,14 +1,19 @@
-# load wham
-is.repo <- try(pkgload::load_all(compile=FALSE)) #this is needed to run from repo without using installed version of wham
-if(is.character(is.repo)) library(wham) #not using repo
-#by default do not perform bias-correction
-if(!exists("basic_info")) basic_info <- NULL
+# wdにex1~13の結果を保存するフォルダーを生成（1回のみ実行）
+base <- file.path(getwd(), "ex_res")
+dir.create(base, showWarnings = FALSE)
+invisible(lapply(file.path(base, sprintf("ex%d", c(1:6, 8:13))), dir.create, showWarnings = FALSE))
 
-# create directory for analysis, E.g.,
-#write.dir <- "/path/to/save/output"
+# load wham
+#install.packages("pak"); pak::pkg_install("timjmiller/wham") #もしpakが未インストールであれば
+library(wham)
+
+write.dir <- file.path(base, "ex1") 
 if(!exists("write.dir")) write.dir <- tempdir(check=TRUE)
 if(!dir.exists(write.dir)) dir.create(write.dir)
 setwd(write.dir)
+
+basic_info <- NULL # Use WHAM defaults
+
 # read asap3 data file and convert to input list for wham
 path_to_examples <- system.file("extdata", package="wham")
 asap3 <- read_asap3_dat(file.path(path_to_examples,"ex1_SNEMAYT.dat"))
@@ -107,12 +112,8 @@ m4_stage1 <- fit_wham(input4_stage1, do.osa=FALSE, do.retro=FALSE, do.sdrep=FALS
 
 # 7) Stage 2 (free all, full fit)
 input4_stage2 <- input4; input4_stage2$par <- m4_stage1$parList
-m4_stage2 <- fit_wham(input4_stage2, do.osa=FALSE, do.retro=FALSE, do.sdrep=TRUE)
+m4_stage2 <- fit_wham(input4_stage2, do.osa=F)
 check_convergence(m4_stage2)
-
-# 8) OSA residuals
-m4_stage2 <- make_osa_residuals(m4_stage2)
-
 
 # ------------------------------------------------------------
 # Save list of all fit models

@@ -6,15 +6,12 @@
 #   age compositions = 5, logistic normal pool zero obs (ex 1: 7, logistic normal missing zero obs)
 #   selectivity = logistic (ex 1: age-specific)
 
-# devtools::install_github("timjmiller/wham", dependencies=TRUE)
-is.repo <- try(pkgload::load_all(compile=FALSE)) #this is needed to run from repo without using installed version of wham
-if(is.character(is.repo)) library(wham) #not using repo
+library(wham)
 wham.dir <- find.package("wham")
-#by default do not perform bias-correction
-if(!exists("basic_info")) basic_info <- NULL
-
+basic_info <- NULL # Use WHAM defaults
 
 # create directory for analysis, e.g.
+write.dir <- file.path(getwd(), "ex_res", "ex3")
 if(!exists("write.dir")) write.dir <- tempdir(check=TRUE)
 if(!dir.exists(write.dir)) dir.create(write.dir)
 setwd(write.dir)

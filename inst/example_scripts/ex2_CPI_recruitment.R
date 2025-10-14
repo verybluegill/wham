@@ -1,14 +1,13 @@
-is.repo <- try(pkgload::load_all(compile=FALSE)) #this is needed to run from repo without using installed version of wham
-if(is.character(is.repo)) library(wham) #not using repo
+library(wham)
 library(dplyr)
-#by default do not perform bias-correction
-if(!exists("basic_info")) basic_info <- NULL
 
-# create directory for analysis, E.g.,
-#write.dir <- "/path/to/save/output"
+write.dir <- file.path(getwd(), "ex_res", "ex2")
 if(!exists("write.dir")) write.dir <- tempdir(check=TRUE)
 if(!dir.exists(write.dir)) dir.create(write.dir)
 setwd(write.dir)
+
+basic_info <- NULL # Use WHAM defaults
+
 path_to_examples <- system.file("extdata", package="wham")
 asap3 <- read_asap3_dat(file.path(path_to_examples,"ex2_SNEMAYT.dat"))
 env.dat <- read.csv(file.path(path_to_examples, "CPI.csv"), header=T)

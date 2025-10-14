@@ -1,9 +1,7 @@
-# load wham
-is.repo <- try(pkgload::load_all(compile=FALSE)) #this is needed to run from repo without using installed version of wham
-if(is.character(is.repo)) library(wham) #not using repo
+library(wham)
 
 # create directory for analysis, E.g.,
-#write.dir <- "/path/to/save/output"
+write.dir <- file.path(getwd(), "ex_res", "ex13")
 if(!exists("write.dir")) write.dir <- tempdir(check=TRUE)
 if(!dir.exists(write.dir)) dir.create(write.dir)
 setwd(write.dir)
@@ -99,16 +97,16 @@ input_asap <- prepare_wham_input(asap3, F = F_info, catchability = q_info, selec
 names(input_asap)
 
 #compare 
-nofit_all <- fit_wham(input_all, do.fit = FALSE)
-nofit_seq <- fit_wham(input_seq, do.fit = FALSE)
-nofit_asap <- fit_wham(input_asap, do.fit = FALSE)
+nofit_all <- fit_wham(input_all, do.fit = FALSE, MakeADFun.silent = TRUE)
+nofit_seq <- fit_wham(input_seq, do.fit = FALSE, MakeADFun.silent = TRUE)
+nofit_asap <- fit_wham(input_asap, do.fit = FALSE, MakeADFun.silent = TRUE)
 
 c(nofit_all$fn(), nofit_seq$fn(),nofit_asap$fn()) #equal
 c(sum(nofit_asap$par-nofit_all$par), sum(nofit_asap$par-nofit_seq$par)) #all equal
 
-fit_seq <- fit_wham(input_seq, do.retro = FALSE, do.osa = FALSE, do.sdrep = FALSE)
-fit_all <- fit_wham(input_all, do.retro = FALSE, do.osa = FALSE, do.sdrep = FALSE)
-fit_asap <- fit_wham(input_asap, do.retro = FALSE, do.osa = FALSE, do.sdrep = FALSE)
+fit_seq <- fit_wham(input_seq, do.retro = FALSE, do.osa = FALSE, do.sdrep = FALSE, MakeADFun.silent = TRUE)
+fit_all <- fit_wham(input_all, do.retro = FALSE, do.osa = FALSE, do.sdrep = FALSE, MakeADFun.silent = TRUE)
+fit_asap <- fit_wham(input_asap, do.retro = FALSE, do.osa = FALSE, do.sdrep = FALSE, MakeADFun.silent = TRUE)
 c(fit_seq$opt$obj, fit_all$opt$obj, fit_asap$opt$obj) # equal
 c(sum(fit_asap$opt$par-fit_all$opt$par), sum(fit_asap$opt$par-fit_seq$opt$par)) #all equal
 
@@ -216,17 +214,17 @@ input_seq <- set_selectivity(input_seq, selectivity = selectivity)
 input_asap <- prepare_wham_input(diff_stocks_asap, selectivity = selectivity, NAA_re = NAA_list)
 
 #compare 
-nofit_all <- fit_wham(input_all, do.fit = FALSE, do.brps = FALSE)
-nofit_seq <- fit_wham(input_seq, do.fit = FALSE, do.brps = FALSE)
-nofit_asap <- fit_wham(input_asap, do.fit = FALSE, do.brps = FALSE)
+nofit_all <- fit_wham(input_all, do.fit = FALSE, do.brps = FALSE, MakeADFun.silent = TRUE)
+nofit_seq <- fit_wham(input_seq, do.fit = FALSE, do.brps = FALSE, MakeADFun.silent = TRUE)
+nofit_asap <- fit_wham(input_asap, do.fit = FALSE, do.brps = FALSE, MakeADFun.silent = TRUE)
 
 c(nofit_all$fn(), nofit_seq$fn(),nofit_asap$fn()) #equal
 c(sum(nofit_asap$par-nofit_all$par), sum(nofit_asap$par-nofit_seq$par)) #all equal
 
 
-fit_seq <- fit_wham(input_seq, do.retro = FALSE, do.osa = FALSE, do.sdrep = FALSE, do.brps = FALSE)
-fit_all <- fit_wham(input_all, do.retro = FALSE, do.osa = FALSE, do.sdrep = FALSE, do.brps = FALSE)
-fit_asap <- fit_wham(input_asap, do.retro = FALSE, do.osa = FALSE, do.sdrep = FALSE, do.brps = FALSE)
+fit_seq <- fit_wham(input_seq, do.retro = FALSE, do.osa = FALSE, do.sdrep = FALSE, do.brps = FALSE, MakeADFun.silent = TRUE)
+fit_all <- fit_wham(input_all, do.retro = FALSE, do.osa = FALSE, do.sdrep = FALSE, do.brps = FALSE, MakeADFun.silent = TRUE)
+fit_asap <- fit_wham(input_asap, do.retro = FALSE, do.osa = FALSE, do.sdrep = FALSE, do.brps = FALSE, MakeADFun.silent = TRUE)
 
 c(fit_seq$opt$obj, fit_all$opt$obj, fit_asap$opt$obj) # equal
 c(sum(fit_asap$opt$par-fit_all$opt$par), sum(fit_asap$opt$par-fit_seq$opt$par)) #all equal

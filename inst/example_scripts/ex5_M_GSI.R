@@ -1,9 +1,7 @@
 # WHAM example 5: Ecov and age-year effects on natural mortality
 
-is.repo <- try(pkgload::load_all(compile=FALSE)) #this is needed to run from repo without using installed version of wham
-if(is.character(is.repo)) library(wham) #not using repo
-#by default do not perform bias-correction
-if(!exists("basic_info")) basic_info <- NULL
+library(wham)
+basic_info <- NULL # Use WHAM defaults
 
 library(ggplot2)
 library(tidyr)
@@ -11,6 +9,7 @@ library(dplyr)
 library(viridis)
 
 # create directory for analysis, e.g.
+write.dir <- file.path(getwd(), "ex_res", "ex5")
 if(!exists("write.dir")) write.dir <- tempdir(check=TRUE)
 if(!dir.exists(write.dir)) dir.create(write.dir)
 setwd(write.dir)
@@ -223,8 +222,6 @@ png(filename = file.path(write.dir, "MAA.png"), width = 15, height = 15, res = 1
     )
 dev.off()
 
-utils::browseURL("MAA.png") #Show a created image
-
 # add projections
 mods_proj <- vector("list",n.mods)
 tofit <- which(is_conv)
@@ -233,6 +230,6 @@ for(m in tofit){
 }
 
 # make sure NLL doesn't change with projections
-diff_nll <- sapply(tofit, function(x) mods[[m]]$opt$obj - mods_proj[[m]]$fn()) 
+diff_nll <- sapply(tofit, function(x) mods[[x]]$opt$obj - mods_proj[[x]]$fn()) 
 diff_nll #~0
 
