@@ -1,43 +1,50 @@
 # Run all WHAM examples
 
-#コードを実行する前に、Working DirectoryをProjectのDirectoryに設定してください。
-#RStudioのSession → Set WD → To Project Directoryで設定できます。
-
-# wdにex1~13の結果を保存するフォルダーを生成（1回のみ実行）
-base <- file.path(getwd(), "ex_res")
-dir.create(base, showWarnings = FALSE)
-invisible(lapply(file.path(base, sprintf("ex%d", c(1:6, 8:13))), dir.create, showWarnings = FALSE))
-
-ex.dir <- file.path(getwd(), "inst", "example_scripts")
-
-library(wham)
-
 # Ex 1
+ex.dir <- file.path(here::here(), "inst", "example_scripts")
 source(file.path(ex.dir, "ex1_basics.R"))
 
 # Ex 2
+rm(list=ls()) # remove all variables
+ex.dir <- file.path(here::here(), "inst", "example_scripts") #set ex-file folder PATH
 source(file.path(ex.dir, "ex2_CPI_recruitment.R"))
 
 # Ex 3
+rm(list=ls())
+ex.dir <- file.path(here::here(), "inst", "example_scripts")
 source(file.path(ex.dir, "ex3_projections.R"))
 
 # Ex 4
+rm(list=ls())
+ex.dir <- file.path(here::here(), "inst", "example_scripts")
 source(file.path(ex.dir, "ex4_selectivity.R"))
 
 # Ex 5
+rm(list=ls())
+ex.dir <- file.path(here::here(), "inst", "example_scripts")
 source(file.path(ex.dir, "ex5_M_GSI.R"))
 
 # Ex 6
+rm(list=ls())
+ex.dir <- file.path(here::here(), "inst", "example_scripts")
 source(file.path(ex.dir, "ex6_NAA.R"))
 
 # Ex 8
+rm(list=ls())
+ex.dir <- file.path(here::here(), "inst", "example_scripts")
 source(file.path(ex.dir, "ex8_compare_asap.R"))
 
 # Ex 9
+rm(list=ls())
+ex.dir <- file.path(here::here(), "inst", "example_scripts")
 source(file.path(ex.dir, "ex9_retro_pred.R"))
 
 # Ex 10
+rm(list=ls())
+ex.dir <- file.path(here::here(), "inst", "example_scripts")
 source(file.path(ex.dir, "ex10_simulation.R"))
 
 # Ex 11
+rm(list=ls())
+ex.dir <- file.path(here::here(), "inst", "example_scripts")
 source(file.path(ex.dir, "ex11_catchability.R"))

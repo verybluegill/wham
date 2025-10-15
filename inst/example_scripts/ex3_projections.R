@@ -11,7 +11,9 @@ wham.dir <- find.package("wham")
 basic_info <- NULL # Use WHAM defaults
 
 #毎回コードを実行する前に、Working DirectoryをProjectのDirectoryに設定してください。
-#RStudioのSession → Set WD → To Project Directoryで設定できます。
+#以下のコードまたはRStudioのSession → Set WD → To Project Directoryで設定できます。
+setwd(here::here()) # set WD to Proj. PATH
+
 # create directory for analysis
 write.dir <- file.path(getwd(), "ex_res", "ex3")
 if(!exists("write.dir")) write.dir <- tempdir(check=TRUE)

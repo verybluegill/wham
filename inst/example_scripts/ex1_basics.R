@@ -1,3 +1,7 @@
+#毎回コードを実行する前に、Working DirectoryをProjectのDirectoryに設定してください。
+#以下のコードまたはRStudioのSession → Set WD → To Project Directoryで設定できます。
+setwd(here::here()) # set WD to Proj. PATH
+
 library(wham)
 
 # wdにex1~13の結果を保存するフォルダーを生成（1回のみ実行）

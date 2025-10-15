@@ -1,4 +1,7 @@
 # Recommend you to make a RStudio project in "wham-master" folder
+#毎回コードを実行する前に、Working DirectoryをProjectのDirectoryに設定してください。
+#以下のコードまたはRStudioのSession → Set WD → To Project Directoryで設定できます。
+setwd(here::here()) # set WD to Proj. PATH
 
 # the way to load wham (Requires R >= 4.2.2 and the matching Rtools. Confirmed to work with R 4.3.1.)
 library(Matrix) # Matrix を先にロード（Matrixのバージョンに TMB のバージョンを合わせるため）
