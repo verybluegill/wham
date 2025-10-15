@@ -1,9 +1,12 @@
 # WHAM example 8: Read ASAP3 results and compare to fit WHAM models
 
 library(wham)
-basic_info <- NULL # Use WHAM defaults
-
 library(tidyverse)
+
+if (!requireNamespace("tinytex", quietly = TRUE)) install.packages("tinytex") # なければtinytexパッケージを入れる
+if (!tinytex::is_tinytex()) tinytex::install_tinytex() # TinyTeX本体をユーザー領域にインストール
+
+basic_info <- NULL # Use WHAM defaults
 
 #毎回コードを実行する前に、Working DirectoryをProjectのDirectoryに設定してください。
 #以下のコードまたはRStudioのSession → Set WD → To Project Directoryで設定できます。
