@@ -1,14 +1,18 @@
-is.repo <- try(pkgload::load_all(compile=FALSE)) #this is needed to run from repo without using installed version of wham
-if(is.character(is.repo)) library(wham) #not using repo
+library(wham)
 library(dplyr)
-#by default do not perform bias-correction
-if(!exists("basic_info")) basic_info <- NULL
 
-# create directory for analysis, E.g.,
-#write.dir <- "/path/to/save/output"
+#毎回コードを実行する前に、Working DirectoryをProjectのDirectoryに設定してください。
+#以下のコードまたはRStudioのSession → Set WD → To Project Directoryで設定できます。
+setwd(here::here()) # set WD to Proj. PATH
+
+# create directory for analysis
+write.dir <- file.path(getwd(), "ex_res", "ex2")
 if(!exists("write.dir")) write.dir <- tempdir(check=TRUE)
 if(!dir.exists(write.dir)) dir.create(write.dir)
 setwd(write.dir)
+
+basic_info <- NULL # Use WHAM defaults
+
 path_to_examples <- system.file("extdata", package="wham")
 asap3 <- read_asap3_dat(file.path(path_to_examples,"ex2_SNEMAYT.dat"))
 env.dat <- read.csv(file.path(path_to_examples, "CPI.csv"), header=T)
@@ -61,7 +65,7 @@ for(m in 1:n.mods){
                               model_name = "Ex 2: SNEMA Yellowtail Flounder with CPI effects on R",
                               ecov = ecov,
                               NAA_re = list(sigma="rec+1", cor="iid"),
-                              age_comp = "logistic-normal-pool0", basic_info = basic_info) # logistic normal pool 0 obs
+                              age_comp = "logistic-normal-pool0", basic_info = basic_info) # logistic normal pool 0 obs with adjacent age classes.
 
   # Selectivity = logistic, not age-specific as in ex1
   #   2 pars per block instead of n.ages
@@ -100,7 +104,7 @@ df.mods$Rsig <- sapply(mods, function(x) round(exp(x$parList$log_NAA_sigma[1]),3
 not_conv <- !df.mods$conv | !df.mods$pdHess
 mods2 <- mods
 mods2[not_conv] <- NULL
-res <- compare_wham_models(mods2, table.opts=list(sort=FALSE, calc.rho=T))
+res <- compare_wham_models(mods2, table.opts=list(sort=TRUE, calc.rho=T))
 df.aic.tmp <- as.data.frame(res$tab)
 df.aic <- df.aic.tmp[FALSE,]
 ct = 1

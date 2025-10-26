@@ -1,14 +1,19 @@
 # WHAM example 8: Read ASAP3 results and compare to fit WHAM models
 
-# devtools::install_github("timjmiller/wham", dependencies=TRUE)
-is.repo <- try(pkgload::load_all(compile=FALSE)) #this is needed to run from repo without using installed version of wham
-if(is.character(is.repo)) library(wham) #not using repo
-#by default do not perform bias-correction
-if(!exists("basic_info")) basic_info <- NULL
-
+library(wham)
 library(tidyverse)
 
+if (!requireNamespace("tinytex", quietly = TRUE)) install.packages("tinytex") # なければtinytexパッケージを入れる
+if (!tinytex::is_tinytex()) tinytex::install_tinytex() # TinyTeX本体をユーザー領域にインストール
+
+basic_info <- NULL # Use WHAM defaults
+
+#毎回コードを実行する前に、Working DirectoryをProjectのDirectoryに設定してください。
+#以下のコードまたはRStudioのSession → Set WD → To Project Directoryで設定できます。
+setwd(here::here()) # set WD to Proj. PATH
+
 # create directory for analysis, e.g.
+write.dir <- file.path(getwd(), "ex_res", "ex8")
 if(!exists("write.dir")) write.dir <- tempdir(check=TRUE)
 if(!dir.exists(write.dir)) dir.create(write.dir)
 setwd(write.dir)
@@ -36,11 +41,11 @@ mods <- list()
 for(m in 1:n.mods){
   NAA_list <- list(cor=df.mods[m,"naa_cor"], sigma=df.mods[m,"naa_sig"])
   if(NAA_list$sigma == 'none') NAA_list = NULL
-
+  
   input <- prepare_wham_input(asap3, recruit_model = 2, # match asap model, which does not estimate stock-recruitment relationship
                               model_name = df.mods$Model[m],                         
                               NAA_re = NAA_list, basic_info = basic_info)   
-
+  
   mods[[m]] <- fit_wham(input, do.osa=F)
   saveRDS(mods[[m]], file=file.path(write.dir, paste0(df.mods$Model[m],".rds")))
 }
@@ -55,6 +60,7 @@ for(m in conv_mods){
 
 # get output from ASAP model run
 base <- read_asap3_fit(wd=file.path(path_to_examples,"BASE_3"), asap.name="BASE_3")
+if (is.null(base$sdrep)) base$sdrep <- TRUE #RM changed
 mods <- c(list(base),mods)
 names(mods) <- c("ASAP",paste0("WHAM-",df.mods$Model))
 

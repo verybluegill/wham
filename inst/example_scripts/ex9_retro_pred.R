@@ -1,17 +1,33 @@
 # WHAM example 9: Retrospective predictions
 
-# devtools::install_github("timjmiller/wham", dependencies=TRUE)
-# devtools::load_all("~/Documents/wham/")
-is.repo <- try(pkgload::load_all(compile=FALSE)) #this is needed to run from repo without using installed version of wham
-if(is.character(is.repo)) library(wham) #not using repo
-#by default do not perform bias-correction
-if(!exists("basic_info")) basic_info <- NULL
+library(wham)
+basic_info <- NULL # Use WHAM defaults
 
 library(tidyverse)
 library(viridis)
 library(ggplot2)
 
+#func. from compare_wham_models.R
+fancy_scientific <- function(l) {
+  if(max(l, na.rm=T) < 100){
+    l <- format(l, scientific = FALSE, digits=2)
+  } else {
+    l <- format(l, scientific = TRUE, digits=2)
+    l <- gsub("0e\\+00","0",l)
+    l <- gsub("^(.*)e", "'\\1'e", l)
+    l <- gsub("e\\+","e",l)
+    l <- gsub("e", "%*%10^", l)
+    l <- gsub("\\'1[\\.0]*\\'\\%\\*\\%", "", l)
+  }
+  parse(text=l, keep.source = FALSE)
+}
+
+#毎回コードを実行する前に、Working DirectoryをProjectのDirectoryに設定してください。
+#以下のコードまたはRStudioのSession → Set WD → To Project Directoryで設定できます。
+setwd(here::here()) # set WD to Proj. PATH
+
 # create directory for analysis, e.g.
+write.dir <- file.path(getwd(), "ex_res", "ex9")
 if(!exists("write.dir")) write.dir <- tempdir(check=TRUE)
 if(!dir.exists(write.dir)) dir.create(write.dir)
 setwd(write.dir)

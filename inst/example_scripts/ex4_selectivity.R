@@ -12,20 +12,22 @@
 
 # CURRENTLY: selectivity$initial_pars is different between ex4_selectivity and test_ex04_selectivity
 
-is.repo <- try(pkgload::load_all(compile=FALSE)) #this is needed to run from repo without using installed version of wham
-if(is.character(is.repo)) library(wham) #not using repo
+library(wham)
 library(ggplot2)
 library(tidyr)
 library(viridis)
-#by default do not perform bias-correction
-if(!exists("basic_info")) basic_info <- NULL
+basic_info <- NULL # Use WHAM defaults
 
 # -------------------------------------------------------------------------
 # 1. Setup and load data
 # -------------------------------------------------------------------------
 
-# create directory for analysis, e.g.
-# write.dir <- "/path/to/save/ex2" on linux/mac
+#毎回コードを実行する前に、Working DirectoryをProjectのDirectoryに設定してください。
+#以下のコードまたはRStudioのSession → Set WD → To Project Directoryで設定できます。
+setwd(here::here()) # set WD to Proj. PATH
+
+# create directory for analysis
+write.dir <- file.path(getwd(), "ex_res", "ex4")
 if(!exists("write.dir")) write.dir <- tempdir(check=TRUE)
 if(!dir.exists(write.dir)) dir.create(write.dir)
 setwd(write.dir)
@@ -91,7 +93,7 @@ for(m in 1:n.mods){
 	mods[[m]] <- fit_wham(input, do.check=T, do.osa=F, do.retro=F) 
 }
 
-for(m in 1:length(mods)) saveRDS(mod[[m]], file=paste0("m",m,".rds"))
+for(m in 1:length(mods)) saveRDS(mods[[m]], file=paste0("m",m,".rds"))
 
 # -----------------------------------------------------------------------
 # 4. Model convergence and comparison
@@ -167,3 +169,6 @@ print(ggplot(df, aes(x=Year, y=Age)) +
 	scale_x_continuous(expand=c(0,0)) +
 	scale_y_continuous(expand=c(0,0)))
 dev.off()
+
+# Note: Warnings about Inf/-Inf may appear when empty panels are drawn, 
+# but they do not affect the plot or the data (safe to ignore). 

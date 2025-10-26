@@ -15,18 +15,19 @@
 # As in example 5:
 #   Gulf Stream Index (GSI)
 
-# devtools::install_github("timjmiller/wham", dependencies=TRUE)
-is.repo <- try(pkgload::load_all(compile=FALSE)) #this is needed to run from repo without using installed version of wham
-if(is.character(is.repo)) library(wham) #not using repo
-#by default do not perform bias-correction
-if(!exists("basic_info")) basic_info <- NULL
+library(wham)
+basic_info <- NULL # Use WHAM defaults
 
 library(ggplot2)
 library(tidyr)
 library(dplyr)
 
+#毎回コードを実行する前に、Working DirectoryをProjectのDirectoryに設定してください。
+#以下のコードまたはRStudioのSession → Set WD → To Project Directoryで設定できます。
+setwd(here::here()) # set WD to Proj. PATH
+
 # create directory for analysis, e.g.
-# write.dir <- "/path/to/save/ex2" on linux/mac
+write.dir <- file.path(getwd(), "ex_res", "ex6")
 if(!exists("write.dir")) write.dir = tempdir(check = TRUE)
 if(!dir.exists(write.dir)) dir.create(write.dir)
 setwd(write.dir)
@@ -118,12 +119,21 @@ df.mods$NLL <- sapply(mods, function(x) round(x$opt$objective,3))
 not_conv <- !df.mods$conv | !df.mods$pdHess
 mods2 <- mods
 mods2[not_conv] <- NULL
-df.aic.tmp <- as.data.frame(compare_wham_models(mods2, table.opts=list(sort=FALSE, calc.rho=TRUE))$tab)
+#df.aic.tmp <- as.data.frame(compare_wham_models(mods2, table.opts=list(sort=FALSE, calc.rho=TRUE))$tab)
+# To avoid the error, configure options as follows:
+cmp <- compare_wham_models(
+  mods2,
+  sort = FALSE,
+  calc.rho = TRUE,
+  do.plot = FALSE,
+  do.print = FALSE
+)
+df.aic.tmp <- as.data.frame(cmp$tab)
 df.aic <- df.aic.tmp[FALSE,]
 ct = 1
 for(i in 1:n.mods){
   if(not_conv[i]){
-    df.aic[i,] <- rep(NA,5)
+    df.aic[i,] <- rep(NA, ncol(df.aic.tmp))
   } else {
     df.aic[i,] <- df.aic.tmp[ct,]
     ct <- ct + 1
@@ -192,4 +202,3 @@ png(filename = file.path(getwd(), paste0("NAA_devs.png")), width = 8, height = 8
       facet_grid(rows=vars(NAA_lab), cols=vars(GSI_how), drop=F) +
       scale_fill_gradient2(name = "", low = scales::muted("blue"), mid = "white", high = scales::muted("red")))
 dev.off()
-

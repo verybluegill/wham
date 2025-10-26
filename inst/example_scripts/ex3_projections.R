@@ -6,15 +6,16 @@
 #   age compositions = 5, logistic normal pool zero obs (ex 1: 7, logistic normal missing zero obs)
 #   selectivity = logistic (ex 1: age-specific)
 
-# devtools::install_github("timjmiller/wham", dependencies=TRUE)
-is.repo <- try(pkgload::load_all(compile=FALSE)) #this is needed to run from repo without using installed version of wham
-if(is.character(is.repo)) library(wham) #not using repo
+library(wham)
 wham.dir <- find.package("wham")
-#by default do not perform bias-correction
-if(!exists("basic_info")) basic_info <- NULL
+basic_info <- NULL # Use WHAM defaults
 
+#毎回コードを実行する前に、Working DirectoryをProjectのDirectoryに設定してください。
+#以下のコードまたはRStudioのSession → Set WD → To Project Directoryで設定できます。
+setwd(here::here()) # set WD to Proj. PATH
 
-# create directory for analysis, e.g.
+# create directory for analysis
+write.dir <- file.path(getwd(), "ex_res", "ex3")
 if(!exists("write.dir")) write.dir <- tempdir(check=TRUE)
 if(!dir.exists(write.dir)) dir.create(write.dir)
 setwd(write.dir)
@@ -112,19 +113,19 @@ mod_proj[[11]] <- project_wham(mod, proj.opts=list(n.yrs=5, use.last.F=FALSE, us
               cont.ecov=TRUE, use.last.ecov=FALSE, avg.ecov.yrs=NULL, proj.ecov=NULL), save.sdrep=FALSE)
 
 # default settings: 3 years, use last F, continue ecov, but projected recruitment deviations=0 and average NAA deviations (1992-1996) projected
-proj_opts[[12]] <- list(n.yrs=3, use.last.F=TRUE, use.avg.F=FALSE,
-              use.FXSPR=FALSE, proj.F=NULL, proj.catch=NULL, avg.yrs=NULL,
-              cont.ecov=TRUE, use.last.ecov=FALSE, avg.ecov.yrs=NULL, proj.ecov=NULL, proj_R_opt = 4, proj_NAA_opt = 2, avg.yrs.NAA = list(list(1992:1996)))
+mod_proj[[12]] <- project_wham(mod, proj.opts=list(n.yrs=3, use.last.F=TRUE, use.avg.F=FALSE,
+                                                   use.FXSPR=FALSE, proj.F=NULL, proj.catch=NULL, avg.yrs=NULL,
+                                                   cont.ecov=TRUE, use.last.ecov=FALSE, avg.ecov.yrs=NULL, proj.ecov=NULL, proj_R_opt = 4, proj_NAA_opt = 2, avg.yrs.NAA = list(list(1992:1996))), save.sdrep=FALSE)
 
 # default settings: 3 years, use last F, continue ecov, but projected recruitment deviations are averged over 1992-1996 and no NAA deviations projected
-proj_opts[[13]] <- list(n.yrs=3, use.last.F=TRUE, use.avg.F=FALSE,
-              use.FXSPR=FALSE, proj.F=NULL, proj.catch=NULL, avg.yrs=NULL,
-              cont.ecov=TRUE, use.last.ecov=FALSE, avg.ecov.yrs=NULL, proj.ecov=NULL, proj_R_opt = 3, proj_NAA_opt = 3, avg.yrs.R = list(1992:1996))
+mod_proj[[13]] <- project_wham(mod, proj.opts=list(n.yrs=3, use.last.F=TRUE, use.avg.F=FALSE,
+                                                   use.FXSPR=FALSE, proj.F=NULL, proj.catch=NULL, avg.yrs=NULL,
+                                                   cont.ecov=TRUE, use.last.ecov=FALSE, avg.ecov.yrs=NULL, proj.ecov=NULL, proj_R_opt = 3, proj_NAA_opt = 3, avg.yrs.R = list(1992:1996)), save.sdrep=FALSE)
 
 # default settings: 3 years, use last F, continue ecov, but projected recruitment converges to that used for 40%SPR BRPS and no NAA deviations projected
-proj_opts[[14]] <- list(n.yrs=3, use.last.F=TRUE, use.avg.F=FALSE,
-              use.FXSPR=FALSE, proj.F=NULL, proj.catch=NULL, avg.yrs=NULL,
-              cont.ecov=TRUE, use.last.ecov=FALSE, avg.ecov.yrs=NULL, proj.ecov=NULL, proj_R_opt = 2, proj_NAA_opt = 3, avg.yrs.R = list(1992:1996))
+mod_proj[[14]] <- project_wham(mod, proj.opts=list(n.yrs=3, use.last.F=TRUE, use.avg.F=FALSE,
+                                                   use.FXSPR=FALSE, proj.F=NULL, proj.catch=NULL, avg.yrs=NULL,
+                                                   cont.ecov=TRUE, use.last.ecov=FALSE, avg.ecov.yrs=NULL, proj.ecov=NULL, proj_R_opt = 2, proj_NAA_opt = 3, avg.yrs.R = list(1992:1996)), save.sdrep=FALSE)
 
 saveRDS(mod_proj, file="m5_proj.rds")
 # mod_proj <- readRDS("m5_proj.rds")

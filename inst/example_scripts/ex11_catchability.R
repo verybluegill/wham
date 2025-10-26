@@ -3,16 +3,15 @@
 #   - estimating environmental effects on catchability (and recuitment at the same time)
 #   - estimating time-varying random effects on catchability.
 
-is.repo <- try(pkgload::load_all(compile=FALSE)) #this is needed to run from repo without using installed version of wham
-if(is.character(is.repo)) library(wham) #not using repo
-#by default do not perform bias-correction
-if(!exists("basic_info")) basic_info <- NULL
+library(wham)
+basic_info <- NULL # Use WHAM defaults
 
-#by default do not perform bias-correction
-if(!exists(basic_info)) basic_info <- NULL
+#毎回コードを実行する前に、Working DirectoryをProjectのDirectoryに設定してください。
+#以下のコードまたはRStudioのSession → Set WD → To Project Directoryで設定できます。
+setwd(here::here()) # set WD to Proj. PATH
 
 # create directory for analysis, e.g.
-# write.dir <- "/path/to/save/ex2" on linux/mac
+write.dir <- file.path(getwd(), "ex_res", "ex11")
 if(!exists("write.dir")) write.dir = tempdir(check=TRUE)
 if(!dir.exists(write.dir)) dir.create(write.dir)
 setwd(write.dir)

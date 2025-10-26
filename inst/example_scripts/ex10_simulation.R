@@ -6,18 +6,19 @@
 # - Configure different assumptions about the population for both the operating model and the estimating model.
 # - Do a closed-loop simulation with operating model, fitting an estimating model, generating catch advice and incorporating it into the operating model.
 
-# devtools::install_github("timjmiller/wham", dependencies=TRUE)
-is.repo <- try(pkgload::load_all(compile=FALSE)) #this is needed to run from repo without using installed version of wham
-if(is.character(is.repo)) library(wham) #not using repo
-#by default do not perform bias-correction
-if(!exists("basic_info")) basic_info <- NULL
+library(wham)
+basic_info <- NULL # Use WHAM defaults
 
 library(ggplot2)
 library(tidyr)
 library(dplyr)
 
+#毎回コードを実行する前に、Working DirectoryをProjectのDirectoryに設定してください。
+#以下のコードまたはRStudioのSession → Set WD → To Project Directoryで設定できます。
+setwd(here::here()) # set WD to Proj. PATH
+
 # create directory for analysis, e.g.
-# write.dir <- "/path/to/save/ex2" on linux/mac
+write.dir <- file.path(getwd(), "ex_res", "ex10")
 if(!exists("write.dir")) write.dir = tempdir(check=TRUE)
 if(!dir.exists(write.dir)) dir.create(write.dir)
 setwd(write.dir)
@@ -106,7 +107,6 @@ lines(mod_1$years, resid_cis[,1])
 lines(mod_1$years, resid_cis[,2])
 abline(h = 0, lty = 2)
 dev.off()
-
 
 # 3. Fitting a model different from the operating model
 
@@ -205,8 +205,6 @@ lines(mod_1$years, simfit[[1]]$rep$SSB, lty = 2, col = 'red')
 dev.off()
 
 #3c: Alternative population assumptions
-
-
 NAA_re_om = list(
   sigma="rec+1", #random effects for recruitment and older age classes
   cor="iid", #random effects are independent
@@ -252,7 +250,6 @@ lines(om_ss$years, simfit[[1]]$rep$SSB, lty = 2, col = 'red')
 dev.off()
 
 #3d: Alternative selectivity assumptions
-
 selectivity_em = list(
   model = c(rep("logistic", input$data$n_fleets),rep("logistic", input$data$n_indices)),
   initial_pars = rep(list(c(5,1)), input$data$n_fleets + input$data$n_indices)) #fleet, index
@@ -526,7 +523,6 @@ png("sim_plot_4d.png")
 plot(stock_om$years, sim_q$q[,1], type = 'l', ylab = "Catchability", xlab = "Year")
 dev.off()
 
-
 # 4e. Setting effects of Environmental covariates.
 
 ecov_om = list(
@@ -574,7 +570,6 @@ dev.off()
 png("sim_plot_4e_2.png")
 plot(stock_om$years, sim_Ecov$NAA[1,1,,1], type = 'l', ylab = "Recruitment", xlab = "Year")
 dev.off()
-
 
 # 4f. Estimation model with incorrect M assumption
 
@@ -628,7 +623,6 @@ res <- cbind(simfit[[2]]$SSB/exp(simfit[[2]]$log_SSB_FXSPR[,1]), simfit[[1]]$rep
 plot(stock_om$years, res[,1], type = 'l', ylab = "SSB/SSB(F40)", xlab = "Year", ylim = c(0, max(res)))
 lines(stock_om$years, res[,2], lty = 2, col = 'red')
 dev.off()
-
 
 # 5. Closed-loop simulation
 
@@ -819,4 +813,3 @@ res <- cbind(looped_rep$SSB[1:76]/exp(looped_rep$log_SSB_FXSPR[1:76,1]), looped_
 plot(stock_om$years[1:76], res[,1], type = "l", ylim = c(0,max(res)), ylab = "SSB/SSB40", xlab = "Year")
 lines(stock_om$years[1:76], res[,2], col = "red")
 dev.off()
-
