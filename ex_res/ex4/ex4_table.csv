@@ -1,9 +1,0 @@
-Model,Selectivity,Block1_re,opt_converged,pd_hessian,NLL,Runtime,dAIC,AIC
-m1,logistic,none,Yes,Yes,-788.748,0.07,54.5,-1449.5
-m2,logistic,iid,Yes,Yes,-811.603,0.11,10.8,-1493.2
-m3,logistic,2dar1,Yes,Yes,-818.98,0.11,0,-1504
-m4,age-specific,none,Yes,Yes,-793.497,0.06,51,-1453
-m5,age-specific,iid,Yes,Yes,-793.497,0.1,53,-1451
-m6,age-specific,ar1,Yes,Yes,-785.042,0.1,67.9,-1436.1
-m7,age-specific,ar1_y,Yes,Yes,-818.61,0.09,4.8,-1499.2
-m8,age-specific,2dar1,Yes,Yes,-820.487,0.11,3,-1501
