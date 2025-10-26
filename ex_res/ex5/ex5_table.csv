@@ -1,0 +1,15 @@
+Model,M_model,mean_model,age_specific,M_re,Ecov_process,Ecov_how,conv,pdHess,runtime,NLL,dAIC,AIC,rho_R,rho_SSB,rho_Fbar
+m1,---,fixed-M,NA,none,ar1,none,TRUE,TRUE,0.05,-813.858,37.1,-1489.7,0.259,0.117,-0.145
+m2,---,fixed-M,NA,none,ar1,lag-0-linear,TRUE,TRUE,0.08,-819.584,27.6,-1499.2,0.365,0.158,-0.170
+m3,---,fixed-M,NA,none,ar1,lag-0-poly-2,TRUE,TRUE,0.39,-820.307,28.2,-1498.6,0.380,0.178,-0.185
+m4,---,fixed-M,NA,ar1_a,ar1,none,TRUE,FALSE,0.12,-828.322,---,---,---,---,---
+m5,---,fixed-M,NA,ar1_y,ar1,none,TRUE,TRUE,0.08,-821.393,26.0,-1500.8,0.704,0.128,-0.133
+m6,---,fixed-M,NA,ar1_ay,ar1,none,FALSE,FALSE,0.05,-819.575,---,---,---,---,---
+m7,age-specific,estimate-M,TRUE,none,ar1,none,TRUE,FALSE,0.06,-837.559,---,---,---,---,---
+m8,weight-at-age,weight-at-age,NA,none,ar1,none,TRUE,TRUE,0.05,-825.02,18.8,-1508.0,0.725,0.140,-0.144
+m9,constant,estimate-M,FALSE,none,ar1,none,TRUE,TRUE,0.05,-825.015,16.8,-1510.0,0.544,0.129,-0.141
+m10,constant,estimate-M,FALSE,ar1_a,ar1,none,TRUE,FALSE,0.13,-829.108,---,---,---,---,---
+m11,constant,estimate-M,FALSE,ar1_y,ar1,none,TRUE,TRUE,0.08,-825.399,20.0,-1506.8,1.186,0.414,-0.298
+m12,constant,estimate-M,FALSE,ar1_ay,ar1,none,TRUE,TRUE,0.12,-836.408, 0.0,-1526.8,0.312,0.006,-0.044
+m13,constant,estimate-M,FALSE,ar1_ay,ar1,lag-0-linear,FALSE,FALSE,0.08,-844.57,---,---,---,---,---
+m14,constant,estimate-M,FALSE,ar1_ay,ar1,lag-0-poly-2,FALSE,FALSE,0.29,-846.156,---,---,---,---,---
