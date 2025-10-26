@@ -9,13 +9,11 @@ inst/doc
 doc
 Meta
 sandbox
-*.Rproj
 noaa_docs
 .vscode
 src-i386
-/src/unused.hppex_res/
-ex_res/          REM ¶¬•¨‚ğ–³‹
-ex_res/          REM ¶¬•¨‚ğ–³‹
+/src/unused.hpp
+ex_res/
 plots_png/
 res_tables/
 wham_figures_tables.html
