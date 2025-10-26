@@ -174,7 +174,7 @@ for(m in which(is_conv)){
 # save results table
 write.csv(df.mods, file="ex5_table.csv",quote=F, row.names=F)
 
-# compare models which(is_conv) 1, 2, 5, 8, 9, 11, 12
+# compare models which(is_conv) 1, 2, 3, 5, 8, 9, 11, 12
 compare_wham_models(mods[which(is_conv)], do.table=FALSE, plot.opts=list(return.ggplot=F))
 compare_wham_models(mods[which(is_conv)], do.table=FALSE, plot.opts=list(return.ggplot=F, which=6, M.age=5))
 compare_wham_models(mods[which(is_conv)], do.table=FALSE, plot.opts=list(return.ggplot=F, which=6, M.age=4))

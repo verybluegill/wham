@@ -117,6 +117,8 @@ input4_stage2 <- input4; input4_stage2$par <- m4_stage1$parList
 m4_stage2 <- fit_wham(input4_stage2, do.osa=F)
 check_convergence(m4_stage2)
 
+m4_stage2 <- make_osa_residuals(m4_stage2) 
+
 # ------------------------------------------------------------
 # Save list of all fit models
 mods <- list(m1=m1, m2=m2, m3=m3, m4=m4_stage2)
