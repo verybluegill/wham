@@ -11,6 +11,21 @@ library(tidyverse)
 library(viridis)
 library(ggplot2)
 
+#func. from compare_wham_models.R
+fancy_scientific <- function(l) {
+  if(max(l, na.rm=T) < 100){
+    l <- format(l, scientific = FALSE, digits=2)
+  } else {
+    l <- format(l, scientific = TRUE, digits=2)
+    l <- gsub("0e\\+00","0",l)
+    l <- gsub("^(.*)e", "'\\1'e", l)
+    l <- gsub("e\\+","e",l)
+    l <- gsub("e", "%*%10^", l)
+    l <- gsub("\\'1[\\.0]*\\'\\%\\*\\%", "", l)
+  }
+  parse(text=l, keep.source = FALSE)
+}
+
 # create directory for analysis, e.g.
 if(!exists("write.dir")) write.dir <- tempdir(check=TRUE)
 if(!dir.exists(write.dir)) dir.create(write.dir)

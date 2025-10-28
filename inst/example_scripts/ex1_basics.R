@@ -73,19 +73,33 @@ m4 <- fit_wham(input4, do.retro = F, do.sdrep = F, do.osa = F) # turn off extras
 # Check that m4 converged. Bad max absolute gradient
 check_convergence(m4)
 
-#retry starting at best estimates so far
-input4$par <- m4$parList #best estimates so far
-m4_rev <- fit_wham(input4, do.osa = F) 
+# Copy inits from m3 where names match
+m4_skeleton <- fit_wham(input4, do.fit=FALSE)
+par4 <- m4_skeleton$parList; par3 <- m3$parList
+par4[intersect(names(par4), names(par3))] <- par3[intersect(names(par4), names(par3))]
+
+# Temporarily fix all "sigma" parameters (exclude from estimation)
+map_fixed <- m4_skeleton$map
+for(k in names(par4)[grepl("sigma", names(par4), ignore.case=TRUE)]) 
+  map_fixed[[k]] <- factor(rep(NA, length(par4[[k]])))
+
+# Stage 1 (with sigmas fixed)
+input4_stage1 <- input4; input4_stage1$par <- par4; input4_stage1$map <- map_fixed
+m4_stage1 <- fit_wham(input4_stage1, do.osa=FALSE, do.retro=FALSE, do.sdrep=FALSE)
+
+# Stage 2 (free all, full fit)
+input4_stage2 <- input4; input4_stage2$par <- m4_stage1$parList
+m4_stage2 <- fit_wham(input4_stage2, do.osa=F)
 
 # Now convergence is good
-check_convergence(m4_rev)
+check_convergence(m4_stage2)
 
 #add OSA residuals
-m4_rev <- make_osa_residuals(m4_rev)
+m4_stage2 <- make_osa_residuals(m4_stage2)
 
 # ------------------------------------------------------------
 # Save list of all fit models
-mods <- list(m1=m1, m2=m2, m3=m3, m4=m4_rev)
+mods <- list(m1=m1, m2=m2, m3=m3, m4=m4_stage2)
 save("mods", file="ex1_models.RData")
 
 # Compare models by AIC and Mohn's rho

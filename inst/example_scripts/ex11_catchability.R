@@ -8,9 +8,6 @@ if(is.character(is.repo)) library(wham) #not using repo
 #by default do not perform bias-correction
 if(!exists("basic_info")) basic_info <- NULL
 
-#by default do not perform bias-correction
-if(!exists(basic_info)) basic_info <- NULL
-
 # create directory for analysis, e.g.
 # write.dir <- "/path/to/save/ex2" on linux/mac
 if(!exists("write.dir")) write.dir = tempdir(check=TRUE)

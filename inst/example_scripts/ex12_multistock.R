@@ -15,7 +15,7 @@ path_to_examples <- system.file("extdata", package="wham")
 two_stocks_asap <- read_asap3_dat(file.path(path_to_examples,c("ex1_SNEMAYT.dat","ex1_SNEMAYT.dat")))
 ini_2_stocks <- prepare_wham_input(two_stocks_asap)
 fit_2_stocks <- fit_wham(ini_2_stocks, do.osa = FALSE, do.retro= FALSE, do.sdrep = FALSE)
-#saveRDS(fit_2_stocks, file.path(res_dir,"vign_5_fit_2_stocks.RDS"))
+#saveRDS(fit_2_stocks, file.path(write.dir,"vign_5_fit_2_stocks.RDS"))
 
 fit_2_stocks$rep$SSB
 
@@ -255,7 +255,7 @@ input_move_prior$par[ind] <- fit_move$parList[ind]
 
 
 fit_move_prior <- fit_wham(input_move_prior, do.osa = FALSE, do.retro = FALSE, do.sdrep = FALSE, do.brps = FALSE)
-saveRDS(fit_move_prior, file.path(res_dir,"vign_5_fit_2_stocks_move_prior.RDS"))
+saveRDS(fit_move_prior, file.path(write.dir,"vign_5_fit_2_stocks_move_prior.RDS"))
 
 #estimated movement
 fit_move$rep$mu[1,,1,1,1,2]

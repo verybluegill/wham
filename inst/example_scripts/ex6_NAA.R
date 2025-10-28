@@ -118,7 +118,7 @@ df.mods$NLL <- sapply(mods, function(x) round(x$opt$objective,3))
 not_conv <- !df.mods$conv | !df.mods$pdHess
 mods2 <- mods
 mods2[not_conv] <- NULL
-df.aic.tmp <- as.data.frame(compare_wham_models(mods2, table.opts=list(sort=FALSE, calc.rho=TRUE))$tab)
+df.aic.tmp <- as.data.frame(compare_wham_models(mods2, table.opts=list(sort=FALSE, calc.rho=TRUE), do.plot = FALSE)$tab)
 df.aic <- df.aic.tmp[FALSE,]
 ct = 1
 for(i in 1:n.mods){

@@ -73,6 +73,7 @@ for(m in 1:n.mods){
 
   mean_map <- NULL
   if(df.mods$mean_model[m] == "estimate-M"){
+    mean_map <- array(NA_integer_, c(1,1,asap3[[1]]$dat$n_ages))
     if(df.mods$age_specific[m]) mean_map[1,1,] <- 1:asap3[[1]]$dat$n_ages
     else mean_map[1,1,] <- 1
   }
@@ -148,14 +149,32 @@ rownames(df.mods) <- NULL
 df.mods
 
 # plot output for all models that converged
+#for(m in which(is_conv)){
+  #plot_wham_output(mod=mods[[m]], dir.main=file.path(write.dir,paste0("m",m)))}
+#→Error in `.rowNamesDF<-`(x, value = value): duplicate 'row.names' are not allowed
+#→Additional information: Warning message: non-unique value when setting 'row.names': 'stock 1 mean log(M) intercept for log(WAA) effects'
 for(m in which(is_conv)){
-  plot_wham_output(mod=mods[[m]], dir.main=file.path(write.dir,paste0("m",m)))
+  od <- file.path(write.dir, paste0("m", m)) 
+  msg <- try(plot_wham_output(mod = mods[[m]], dir.main = od))
+  
+  if(inherits(msg, "try-error")){
+    # m8 fail when plotting M rows due to duplicate row names.
+    # Fallback: make a copy of the model, hide all M rows, and re-run plotting.
+    message(sprintf("model m%d failed; retry with a plotting-only copy (M rows omitted)", m))
+    mod2 <- mods[[m]]                        
+    if(!is.null(mod2$input$map$Mpars)) {
+      mod2$input$map$Mpars[] <- NA_integer_  # hide all M rows for plotting only
+    }
+    od2 <- paste0(od, "_noMrow")             
+    plot_wham_output(mod = mod2, dir.main = od2, out.type = "html")
+    message(sprintf("model m%d: HTML generated with M omitted -> %s", m, od2))
+  }
 }
 
 # save results table
 write.csv(df.mods, file="ex5_table.csv",quote=F, row.names=F)
 
-# compare models which(is_conv) 1, 2, 5, 8, 9, 11, 12
+# compare models which(is_conv) 1, 2, 3, 5, 8, 9, 11, 12
 compare_wham_models(mods[which(is_conv)], do.table=FALSE, plot.opts=list(return.ggplot=F))
 compare_wham_models(mods[which(is_conv)], do.table=FALSE, plot.opts=list(return.ggplot=F, which=6, M.age=5))
 compare_wham_models(mods[which(is_conv)], do.table=FALSE, plot.opts=list(return.ggplot=F, which=6, M.age=4))
@@ -215,6 +234,6 @@ for(m in tofit){
 }
 
 # make sure NLL doesn't change with projections
-diff_nll <- sapply(tofit, function(x) mods[[m]]$opt$obj - mods_proj[[m]]$fn()) 
+diff_nll <- sapply(tofit, function(x) mods[[x]]$opt$obj - mods_proj[[x]]$fn()) 
 diff_nll #~0
 
